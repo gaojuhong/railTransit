@@ -33,7 +33,7 @@ import dict from "@/views/my-components/xboot/dict";
       }
     },
     computed:{
-      hasShowBtn(){
+      hasShowBtn(){//控制删除按钮显示
         let itemListLen=this.modalForm.itemList.length
         if(itemListLen<=1){
           return false
