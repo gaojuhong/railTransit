@@ -3,14 +3,17 @@ import Cookies from 'js-cookie';
 const user = {
     state: {
         nickname: "",
-        avatar: ""
+        avatar: "",
+        username : ''
     },
     mutations: {
         setUserInfo(state, v) {
             state.nickname = v.nickname;
             state.avatar = v.avatar;
+            state.username = v.username;
             localStorage.nickname = v.nickname;
             localStorage.avatar = v.avatar;
+            localStorage.username = v.username
         },
         setNickname(state, v) {
             state.nickname = v;
@@ -19,6 +22,10 @@ const user = {
         setAvatar(state, v) {
             state.avatar = v;
             localStorage.avatar = v;
+        },
+        setUsername(state, v){
+            state.username = v
+            localStorage.username = v
         },
         logout() {
             Cookies.remove('userInfo');

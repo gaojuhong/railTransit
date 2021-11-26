@@ -5,8 +5,8 @@
     <Card>
       <!-- 查询条件 -->
       <Form ref="searchForm" :model="searchForm" inline :label-width="60" style="position:relative">
-        <FormItem label="年份" prop="year">
-          <DatePicker v-model="searchForm.year" type="year" placeholder="年份" @on-change="changeHandle" />
+        <FormItem label="年份" prop="quarterYear">
+          <DatePicker v-model="searchForm.quarterYear" type="year" placeholder="年份" @on-change="changeHandle" />
         </FormItem>
         <FormItem>
           <Button type="primary" @click="queryHandle">查询</Button>
@@ -46,32 +46,43 @@
 </template>
 
 <script>
-import createYearData from "./components/createYearData";
+import createYearData from "./createYearData";
+import {ajaxQueryDataList} from "@/api/transitManage"
 export default {
   name : 'transit-manage',
   components : {createYearData},
+  provide() {
+    return {
+      form: this.$refs.modalForm
+    }
+  },
   data() {
     return {
       searchForm : {
-        year : '', // 年份季度
+        quarterYear : '', // 年份季度
         pageNumber: 1, // 页码
         pageSize: 10, // 每页条数
+        order : '', // 升序、降序
+        sort : '' // 排序字段
       },
       total : 0, // 总共页数
       loading : false, //  列表加载loading
+      showCreateYearData : false, // 创建年度数据组件是否显示
       columns: [ // 表头数据
-        {type: "index", title : "序号", key: "id", width: 70, align: "center", fixed: "left"},
-        {title: "年度季度", key: "username", minWidth: 120, fixed: "left"},
-        {title: "年度期末在册车辆数(辆)", key: "nickname", minWidth: 190},
-        {title: "年度期末运行车辆数(辆)", key: "avatar", minWidth: 190},
-        {title: "总行程(万公里)", key: "departmentTitle", minWidth: 140},
-        {title: "客运量(万人次)", key: "mobile", minWidth: 135},
-        {title: "旅客周转量(万人公里)", key: "email", minWidth: 180},
-        {title: "能量消耗量(折标煤)", key: "sex", minWidth: 170},
-        {title: "温室气体排放量(tCO2)", key: "type", minWidth: 190},
-        {title: "辅助设施能源消耗(折标煤)", key: "createTime", minWidth: 210},
-        {title: "辅助设施能源消耗(tCO2)", key: "status", minWidth: 200},
-        {title: "状态", key: "status", width: 100, align:"center", render: (h, params) => {
+        {type:'index', title:'序号', width: 70, align: "center", fixed: "left"},
+        {title: "年度季度", key: "quarterYear", minWidth: 120, fixed: "left"},
+        {title: "年度期末在册车辆数(辆)", key: "carCountYearOn", minWidth: 190},
+        {title: "年度期末运行车辆数(辆)", key: "carCountYearUse", minWidth: 190},
+        {title: "总行程(万公里)", key: "totalLine", minWidth: 140},
+        {title: "客运量(万人次)", key: "totalPerson", minWidth: 135},
+        {title: "旅客周转量(万人公里)", key: "totalTurnover", minWidth: 180},
+        {title: "能量消耗量(折标煤)", key: "standardCoalQuantity", minWidth: 170},
+        {title: "温室气体排放量(tCO2)", key: "tco2Quantity", minWidth: 190},
+        {title: "辅助设施能源消耗(折标煤)", key: "", minWidth: 210},
+        {title: "辅助设施能源消耗(tCO2)", key: "", minWidth: 200},
+        {title: "附属设施能源消耗(折标煤)", key: "", minWidth: 210},
+        {title: "附属设施能源消耗(tCO2)", key: "", minWidth: 200},
+        {title: "状态", key: "state", width: 100, align:"center", render: (h, params) => {
             if (params.row.status === '0') {
               return h("Badge", { props: { status: "success", text: "已提交" } });
             } else if (params.row.status == '-1') {
@@ -86,6 +97,7 @@ export default {
               style : {color: '#19be6b'},
               on : {
                 click : () => {
+                  this.lookHandle(params.row)
                   console.log(params)
                 }
               }
@@ -102,19 +114,18 @@ export default {
           ])
         }}
       ],
-      listData : [ // 列表数据
-        {username:'2021年1季度', nickname:'1234', avatar:'3455', departmentTitle:'120', mobile:'145', email:'199', sex:'1', type:'124', createTime:'2345', status:'0'},
-        {username:'2021年2季度', nickname:'1234', avatar:'3455', departmentTitle:'120', mobile:'145', email:'199', sex:'1', type:'124', createTime:'2345', status:'-1'}
-      ],
-      showCreateYearData : false, // 创建年度数据组件是否显示
+      listData : [] // 列表数据
+      
     }
   },
   created(){
-    this.getListData()
+    this.queryHandle()
   },
   methods : {
     // 查询 按钮
-    queryHandle(){},
+    queryHandle(){
+      this.getListData()
+    },
 
     // 重置 按钮
     resetHandle(){
@@ -127,12 +138,22 @@ export default {
       this.showCreateYearData = true
     },
 
+    // 查看 按钮
+    lookHandle(row){
+
+    },
+
     // 获取表格数据
-    getListData(){},
+    getListData(){
+      ajaxQueryDataList(this.searchForm).then(res => {
+        this.listData = res.result.records || []
+        this.total = res.result.total
+      })
+    },
 
     // 年度选择时赋值，查询条件
     changeHandle(date){
-      this.searchForm.year = date
+      this.searchForm.quarterYear = date
     },
 
     // 页码改变

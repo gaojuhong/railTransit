@@ -18,7 +18,6 @@ axios.interceptors.request.use(config => {
 // http response 拦截器
 axios.interceptors.response.use(response => {
     const data = response.data;
-
     // 根据返回的code值来做不同的处理(和后端约定)
     switch (data.code) {
         case 401:
@@ -61,6 +60,7 @@ axios.interceptors.response.use(response => {
     return Promise.resolve(err);
 });
 
+// 携带Token认证的GET请求
 export const getRequest = (url, params) => {
     let accessToken = getStore('accessToken');
     return axios({
@@ -73,6 +73,7 @@ export const getRequest = (url, params) => {
     });
 };
 
+// 携带Token认证的POST请求，Content-Type为application/x-www-form-urlcoded
 export const postRequest = (url, params) => {
     let accessToken = getStore("accessToken");
     return axios({
@@ -94,6 +95,7 @@ export const postRequest = (url, params) => {
     });
 };
 
+// 携带Token认证的PUT请求，Content-Type为application/x-www-form-urlcoded
 export const putRequest = (url, params) => {
     let accessToken = getStore("accessToken");
     return axios({
@@ -115,6 +117,7 @@ export const putRequest = (url, params) => {
     });
 };
 
+// 携带Token认证的POST请求，Content-Type为application/json，后端需使用@RequestBody接收对象参数
 export const postBodyRequest = (url, params) => {
     let accessToken = getStore('accessToken');
     return axios({
@@ -140,6 +143,7 @@ export const getNoAuthRequest = (url, params) => {
     });
 };
 
+// 无Token认证的POST请求，Content-Type为application/x-www-form-urlcoded
 export const postNoAuthRequest = (url, params) => {
     return axios({
         method: 'post',

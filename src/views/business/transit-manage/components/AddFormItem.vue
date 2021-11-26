@@ -1,61 +1,81 @@
 <template>
-  <Form label-colon ref="modalForm" :model="modalForm" :rules="modalRule" inline>
-    <Row v-for="(item,idx) in modalForm.itemList" :key="idx">
-      <FormItem label="" prop="year" :label-width="150">
-       <dict dict="energy_type" v-model="item.value1" style="width: 144px" />
-      </FormItem>
-      <FormItem  label="" prop="year" :label-width="150">
-        <InputNumber v-model="item.value2" controls-outside :min="0" />
-      </FormItem>
-      <Button type="success" shape="circle" icon="md-add" @click="addItemhander" style="margin-right:10px;" />
-      <Button type="error" shape="circle"  v-if="hasShowBtn"  @click="removeItemHander(idx)" icon="md-remove" />
-    </Row>
-  </Form>
+  <div>
+    <Form ref="itemListForm" :model="itemListForm" inline>
+      <Row v-for="(item, idx) in itemListForm.itemList" :key="idx">
+        <FormItem label="燃料种类" :prop="'itemList.' + idx + '.energyTypeId'" :label-width="160" :rules="[
+          { required: true, message: '燃料种类不能为空', trigger: 'change' },
+        ]">
+          <dict dict="energy_type" v-model="item.energyTypeId" style="width: 144px" />
+        </FormItem>
+        <FormItem label="燃料消耗量" :prop="'itemList.' + idx + '.energyConsumeQuantity'" :label-width="160"
+          :rules="[{ required: true, type: 'number', message: '燃料消耗量不能为空', trigger: 'blur' }]">
+          <InputNumber v-model="item.energyConsumeQuantity" :precision="4"  controls-outside :min="0" />
+        </FormItem>
+        <Button type="error" shape="circle" icon="md-remove" v-if="hasShowBtn" @click="removeItemHander(idx)"
+          style="margin-right: 10px" />
+        <Button type="success" shape="circle" icon="md-add" v-if="idx === itemListForm.itemList.length - 1"
+          @click="addItemhander" />
+      </Row>
+    </Form>
+  </div>
 </template>
 
 <script>
-import dict from "@/views/my-components/xboot/dict";
+  import dict from "@/views/my-components/xboot/dict";
   export default {
-    components:{dict},
+    components: {
+      dict
+    },
+    props: {
+      value: {
+        type: Array,
+        default: () => [],
+      },
+    },
     data() {
       return {
-        modalForm: {
+        itemListForm: {
           itemList: [{
-            value1: "",
-            value2: ""
-          },
-          {
-            value1: "",
-            value2: ""
-          }
-          ]
+            energyTypeId: "", // 能源种类
+            energyConsumeQuantity: "", // 能源数量
+          }],
         }
-      }
+
+      };
     },
-    computed:{
-      hasShowBtn(){//控制删除按钮显示
-        let itemListLen=this.modalForm.itemList.length
-        if(itemListLen<=1){
-          return false
+    computed: {
+      hasShowBtn() {
+        if (this.itemListForm.itemList.length <= 1) {
+          // 删除按钮只有第一个不显示，添加按钮只有最后一个显示
+          return false;
         }
-        return true
-      }
-    },
-    methods:{
-      removeItemHander(idx){
-       this.modalForm.itemList.splice(idx,1)
+        return true;
       },
-      addItemhander(){
-        this.modalForm.itemList.push({
-            value1: "",
-            value2: ""
+    },
+    methods: {
+      submit() {
+        return new Promise((resolve, reject) => {
+          const {
+            itemList
+          } = this.itemListForm
+          this.$refs.itemListForm.validate(valid => {
+            if (valid) {
+              resolve([...itemList])
+            } else {
+              resolve(false)
+            }
+          })
         })
-      }
-    }
-
-  }
+      },
+      removeItemHander(idx) {
+        this.itemListForm.itemList.splice(idx, 1);
+      },
+      addItemhander() {
+        this.itemListForm.itemList.push({
+          energyTypeId: "", // 能源种类
+          energyConsumeQuantity: "", // 能源数量
+        });
+      },
+    },
+  };
 </script>
-
-<style>
-
-</style>
