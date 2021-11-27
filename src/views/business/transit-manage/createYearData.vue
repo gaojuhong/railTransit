@@ -112,9 +112,7 @@
 <script>
   import dict from "@/views/my-components/xboot/dict";
   import AddFormItem from "./components/AddFormItem";
-  import {
-    ajaxYearDataInput
-  } from "@/api/transitManage"
+  import { ajaxYearDataInput } from "@/api/transitManage"
   export default {
     name: 'createYearData',
     components: { dict, AddFormItem},
@@ -285,15 +283,6 @@
       // 抽屉 提交 按钮
       submitHandle() {},
 
-      // modal显示状态改变
-      handleVisibleChange(val) {
-        if (!val) this.closeModal()
-      },
-
-      closeModal() {
-        this.modalForm = this.$options.data().modalForm
-      },
-
       // 抽屉 取消 按钮
       closeHandle() {
         this.visible = false
@@ -317,7 +306,7 @@
         this.$refs.modalForm.resetFields()
       },
 
-      // 年度数据录入
+      // 年度数据录入 保存 按钮
       SaveYearDataInput(energyConsumptionList=[]) {
         let params = Object.assign({}, {
           quarterYear : this.quarterYear
@@ -332,9 +321,8 @@
 
       // 填报年度选择时赋值，条件
       changeHandle(date) {
-        console.log(date)
         this.drawerForm.year = date
-      },
+      }
     }
   };
 </script>
