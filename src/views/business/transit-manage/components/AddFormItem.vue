@@ -55,9 +55,7 @@
     methods: {
       submit() {
         return new Promise((resolve, reject) => {
-          const {
-            itemList
-          } = this.itemListForm
+          const { itemList } = this.itemListForm
           this.$refs.itemListForm.validate(valid => {
             if (valid) {
               resolve([...itemList])

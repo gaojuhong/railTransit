@@ -117,10 +117,7 @@
   } from "@/api/transitManage"
   export default {
     name: 'createYearData',
-    components: {
-      dict,
-      AddFormItem
-    },
+    components: { dict, AddFormItem},
     props: {
       value: {
         type: Boolean,
@@ -139,16 +136,8 @@
           quarter: '', // 填报季度
         },
         drawerRule: { //  抽屉 - 填报年份和季度校验
-          year: [{
-            required: true,
-            message: '填报年度不能为空',
-            trigger: 'change'
-          }],
-          quarter: [{
-            required: true,
-            message: '填报季度不能为空',
-            trigger: 'change'
-          }]
+          year: [{ required: true, message: '填报年度不能为空', trigger: 'change' }],
+          quarter: [{ required: true, message: '填报季度不能为空', trigger: 'change' }]
         },
         modalForm: { // modal - 表单数据
           carCountYearUse: null, // 年度期末运营车辆数
@@ -159,142 +148,28 @@
           totalTurnover: null, // 旅客周转量(万人公里)
         },
         modalRule: {
-          carCountYearUse: [{
-            required: true,
-            message: '年度期末运营车辆数不能为空',
-            type: 'number',
-            trigger: 'blur'
-          }],
-          carCountYearOn: [{
-            required: true,
-            message: '年度期末在册车辆数不能为空',
-            type: 'number',
-            trigger: 'blur'
-          }],
-          useTime: [{
-            required: true,
-            message: '投运时间不能为空',
-            type: 'date',
-            trigger: 'blur'
-          }],
-          totalLine: [{
-            required: true,
-            message: '总行程不能为空',
-            type: 'number',
-            trigger: 'blur'
-          }],
-          totalPerson: [{
-            required: true,
-            message: '客运量不能为空',
-            type: 'number',
-            trigger: 'blur'
-          }],
-          totalTurnover: [{
-            required: true,
-            message: '旅客周转量不能为空',
-            type: 'number',
-            trigger: 'blur'
-          }],
-
+          carCountYearUse: [{ required: true, message: '年度期末运营车辆数不能为空', type: 'number', trigger: 'blur' }],
+          carCountYearOn: [{ required: true, message: '年度期末在册车辆数不能为空', type: 'number', trigger: 'blur' }],
+          useTime: [{ required: true, message: '投运时间不能为空', type: 'date', trigger: 'blur' }],
+          totalLine: [{ required: true, message: '总行程不能为空', type: 'number', trigger: 'blur' }],
+          totalPerson: [{ required: true, message: '客运量不能为空', type: 'number', trigger: 'blur' }],
+          totalTurnover: [{ required: true, message: '旅客周转量不能为空', type: 'number', trigger: 'blur' }]
         },
         quarterOptions: [ //  抽屉 - 填报季度选项
-          {
-            value: "1",
-            label: '一季度'
-          },
-          {
-            value: "2",
-            label: '二季度'
-          },
-          {
-            value: "3",
-            label: '三季度'
-          },
-          {
-            value: "4",
-            label: '四季度'
-          }
+          { value: "1", label: '一季度' },
+          { value: "2", label: '二季度' },
+          { value: "3", label: '三季度' },
+          { value: "4", label: '四季度' }
         ],
         columns: [ // 抽屉-基本信息表头数据
-          {
-            title: "年度期末在册车辆数",
-            key: "carCountYearOn",
-            minWidth: 170
-          },
-          {
-            title: "年度期末运行车辆数",
-            key: "carCountYearUse",
-            minWidth: 170
-          },
-          {
-            title: "投运时间(可按线路填写)",
-            key: "useTime",
-            minWidth: 190
-          },
-          {
-            title: "总行程(万公里)",
-            key: "totalLine",
-            minWidth: 140
-          },
-          {
-            title: "客运量(万人次)",
-            key: "totalPerson",
-            minWidth: 135
-          },
-          {
-            title: "旅客周转量(万人公里)",
-            key: "totalTurnover",
-            minWidth: 180
-          },
-          {
-            title: "汽油(升)",
-            key: "sex",
-            minWidth: 120,
-            align: "center"
-          },
-          {
-            title: "柴油(升)",
-            key: "type",
-            minWidth: 120,
-            align: "center"
-          },
-          {
-            title: "CNG(m3)",
-            key: "createTime",
-            minWidth: 120,
-            align: "center"
-          },
-          {
-            title: "LNG(吨)",
-            key: "status",
-            minWidth: 120,
-            align: "center"
-          },
-          {
-            title: "电力(度)",
-            key: "status",
-            minWidth: 120,
-            align: "center"
-          },
-          {
-            title: "液化石油气(吨)",
-            key: "status1",
-            minWidth: 140,
-            align: "center"
-          },
-          {
-            title: "其他",
-            key: "status2",
-            minWidth: 100,
-            align: "center"
-          },
-          {
-            title: "操作",
-            key: "action",
-            width: 70,
-            align: "center",
-            fixed: "right",
-            render: (h, params) => {
+          { title: "年度期末在册车辆数", key: "carCountYearOn", minWidth: 170 },
+          { title: "年度期末运行车辆数", key: "carCountYearUse", minWidth: 170 },
+          { title: "投运时间(可按线路填写)", key: "useTime", minWidth: 190 },
+          { title: "总行程(万公里)", key: "totalLine", minWidth: 140 },
+          { title: "客运量(万人次)", key: "totalPerson", minWidth: 135 },
+          { title: "旅客周转量(万人公里)", key: "totalTurnover", minWidth: 180 },
+          { title: "其他", key: "status2", minWidth: 100, align: "center"  },
+          { title: "操作", key: "action", width: 70, align: "center", fixed: "right", render: (h, params) => {
               return h('div', [
                 // h('Button', {
                 //   props : {type : 'success', shape : 'circle', icon : 'md-add'},
@@ -306,17 +181,11 @@
                 //   }
                 // }),
                 h('Button', {
-                  props: {
-                    type: 'text',
-                    size: 'small'
-                  },
-                  style: {
-                    color: '#ed4014'
-                  },
+                  props: { type: 'text', size: 'small' },
+                  style: { color: '#ed4014' },
                   on: {
                     click: () => {
                       this.deleteHandle(params.row, '1')
-                      console.log(params.index)
                     }
                   }
                 }, '删除')
@@ -327,41 +196,17 @@
         listData: [], // 抽屉-基本信息列表数据
 
         columns1: [ // 抽屉辅助设施能耗信息-表头数据
-          {
-            title: "设施名称",
-            key: "facilitiesName",
-            minWidth: 170
-          },
-          {
-            title: "燃料种类",
-            key: "energyTypeName",
-            minWidth: 120
-          },
-          {
-            title: "消耗量",
-            key: "energyConsumeQuantity",
-            minWidth: 120
-          },
-          {
-            title: "操作",
-            key: "action",
-            width: 70,
-            align: "center",
-            fixed: "right",
-            render: (h, params) => {
+          { title: "设施名称", key: "facilitiesName", minWidth: 170 },
+          { title: "燃料种类", key: "energyTypeName", minWidth: 120 },
+          { title: "消耗量", key: "energyConsumeQuantity", minWidth: 120 },
+          { title: "操作", key: "action", width: 70, align: "center", fixed: "right", render: (h, params) => {
               return h('div', [
                 h('Button', {
-                  props: {
-                    type: 'text',
-                    size: 'small'
-                  },
-                  style: {
-                    color: '#ed4014'
-                  },
+                  props: { type: 'text', size: 'small' },
+                  style: { color: '#ed4014' },
                   on: {
                     click: () => {
                       this.deleteHandle(params.row, '2')
-                      console.log(params.index)
                     }
                   }
                 }, '删除')
@@ -370,41 +215,17 @@
           }
         ],
         columns2: [ // 抽屉附属设施能耗信息-表头数据
-          {
-            title: "设施名称",
-            key: "facilitiesName",
-            minWidth: 170
-          },
-          {
-            title: "燃料种类",
-            key: "energyTypeName",
-            minWidth: 120
-          },
-          {
-            title: "消耗量",
-            key: "energyConsumeQuantity",
-            minWidth: 120
-          },
-          {
-            title: "操作",
-            key: "action",
-            width: 70,
-            align: "center",
-            fixed: "right",
-            render: (h, params) => {
-              return h('div', [
+          { title: "设施名称", key: "facilitiesName", minWidth: 170 },
+          { title: "燃料种类", key: "energyTypeName", minWidth: 120  },
+          { title: "消耗量", key: "energyConsumeQuantity", minWidth: 120 },
+          { title: "操作", key: "action", width: 70, align: "center", fixed: "right", render: (h, params) => {
+            return h('div', [
                 h('Button', {
-                  props: {
-                    type: 'text',
-                    size: 'small'
-                  },
-                  style: {
-                    color: '#ed4014'
-                  },
+                  props: { type: 'text', size: 'small' },
+                  style: { color: '#ed4014' },
                   on: {
                     click: () => {
                       this.deleteHandle(params.row, '3')
-                      console.log(params.index)
                     }
                   }
                 }, '删除')
@@ -483,11 +304,6 @@
         this.$refs.modalForm.validate(async valid => {
           if (valid) {
             const itemList = await this.$refs.energyInfo.submit()
-            itemList.forEach(element => {
-              
-            });
-            console.log(itemList, '---')
-
             if (itemList) {
               await this.SaveYearDataInput(itemList)
             }
