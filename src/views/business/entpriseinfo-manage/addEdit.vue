@@ -180,11 +180,15 @@ export default {
       this.$refs.form.resetFields();
       if (this.type == "0" || this.type == "1") {
         // 回显数据处理
-        this.form = this.data;
+        this.form = this.data;  
+        if (this.form.plateIds) {
+          this.form.plateIds = this.form.plateIds.split(',')
+        }
       } else {
         // 添加
         delete this.form.id;
       }
+      this.form.typeCode = '0'
       this.visible = value;
     },
     // 获取板块字典

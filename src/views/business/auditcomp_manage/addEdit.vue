@@ -109,8 +109,7 @@ export default {
         auditLevel: "",
         cityId: "",
         cityIds: [],
-        typeCode : '1', // 0企业 1审核单位
-        cityOptions : cityData
+        typeCode : '1' // 0企业 1审核单位
       },
       // 表单验证规则
       formValidate: {
@@ -182,10 +181,17 @@ export default {
       if (this.type == "0" || this.type == "1") {
         // 回显数据处理
         this.form = this.data;
+        if (this.form.plateIds) {
+          this.form.plateIds = this.form.plateIds.split(',')
+        }
+        if (this.form.cityIds) {
+          this.form.cityIds = this.form.cityIds.split(',')
+        }
       } else {
         // 添加
         delete this.form.id;
       }
+      this.form.typeCode = '1'
       this.visible = value;
     },
     // 获取板块字典
