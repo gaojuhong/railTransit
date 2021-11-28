@@ -67,9 +67,8 @@
             <InputNumber v-model="modalForm.carCountYearOn" controls-outside :min="0" />
           </FormItem>
           <FormItem label="投运时间(可按线路填写)" prop="useTime" :label-width="180">
-            <DatePicker v-model="modalForm.useTime" type="date" placeholder="投运时间" style="width: 144px" />
+            <DatePicker v-model="modalForm.useTime"  type="date" format="yyyy-MM-dd" placeholder="投运时间" style="width: 144px" @on-change="onChangeHandle" />
           </FormItem>
-
           <div class="title">生产信息</div>
           <FormItem label="总行程(万公里)" prop="totalLine" :label-width="160">
             <InputNumber v-model="modalForm.totalLine" controls-outside :min="0" />
@@ -148,7 +147,7 @@
         modalRule: {
           carCountYearUse: [{ required: true, message: '年度期末运营车辆数不能为空', type: 'number', trigger: 'blur' }],
           carCountYearOn: [{ required: true, message: '年度期末在册车辆数不能为空', type: 'number', trigger: 'blur' }],
-          useTime: [{ required: true, message: '投运时间不能为空', type: 'date', trigger: 'blur' }],
+          useTime: [{ required: true, message: '投运时间不能为空', type: 'string', trigger: 'change' }],
           totalLine: [{ required: true, message: '总行程不能为空', type: 'number', trigger: 'blur' }],
           totalPerson: [{ required: true, message: '客运量不能为空', type: 'number', trigger: 'blur' }],
           totalTurnover: [{ required: true, message: '旅客周转量不能为空', type: 'number', trigger: 'blur' }]
@@ -252,6 +251,10 @@
     },
     methods: {
       // 添加 按钮
+   // 投运时间
+      onChangeHandle(date){
+        this.modalForm.useTime = date
+      },
       addHanlde(val) {
         this.$refs.drawerForm.validate((valid) => {
           if (valid) {
