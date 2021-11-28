@@ -34,9 +34,7 @@
           </Col>
           <Col span="8">
             <FormItem label="审核级别" prop="auditLevel" >
-              <Select v-model="form.auditLevel" style="width:194px">
-                <Option v-for="item in auditLevelOptions" :value="item.value" :key="item.value">{{ item.label }}</Option>
-              </Select>
+              <dict dict="audit_level" v-model="form.auditLevel" />
             </FormItem>
           </Col>
         </Row>
@@ -46,11 +44,13 @@
               <Input v-model="form.cityId" clearable/>
             </FormItem>
           </Col>
-          <Col span="8">
+        </Row>
+        <Row :gutter="32">
+          <Col span="24">
             <FormItem label="所选择城市" prop="cityIds">
-              <Select v-model="form.cityIds" style="width:194px">
-                <Option v-for="item in auditLevelOptions" :value="item.value" :key="item.value">{{ item.label }}</Option>
-              </Select>
+              <CheckboxGroup v-model="form.plateIds">
+                <Checkbox v-for="(plate, index) in plateIdsOptions" :key="index" :label="plate.value">{{plate.title}}</Checkbox>
+              </CheckboxGroup>
             </FormItem>
           </Col>
         </Row>
@@ -58,7 +58,7 @@
           <Col span="24">
             <FormItem label="板块" prop="plateIds">
               <CheckboxGroup v-model="form.plateIds" @on-change="changeHandle">
-                <Checkbox v-for="(plate, index) in plateIdsOptions" :key="index" :label="plate.label" />
+                <Checkbox v-for="plate in plateIdsOptions" :key="plate.value" :label="plate.value">{{plate.title}}</Checkbox>
               </CheckboxGroup>
             </FormItem>
           </Col>
@@ -74,7 +74,8 @@
 
 <script>
 import { addEnterpriseInfoMange, editEnterpriseInfoMange } from "@/api/entpriseinfoManage";
-  import dict from "@/views/my-components/xboot/dict";
+import dict from "@/views/my-components/xboot/dict";
+import { getDictDataByType } from "@/api/index";
 export default {
   name: "addEdit",
   components: { dict },
@@ -113,19 +114,7 @@ export default {
       formValidate: {
         entName: [{ required: true, message: "企业名称/单位名称不能为空", trigger: "change" }],
       },
-      auditLevelOptions : [ // 审核级别选项
-        { value: "1", label: '初审' },
-        { value: "2", label: '复审' },
-      ],
-      plateIdsOptions: [ //  板块选项
-        { value: "1", label: '轨道交通' },
-        { value: "2", label: '航空运输' },
-        { value: "3", label: '道路客运' },
-        { value: "4", label: '公交客运' },
-        { value: "5", label: '出租客运' },
-        { value: "6", label: '港口作业' },
-        { value: "7", label: '水路客运' },
-      ]
+      plateIdsOptions: [ ]//  板块选项
     };
   },
   watch: {
@@ -136,38 +125,36 @@ export default {
       this.$emit("input", value);
     }
   },
+  created(){
+    this.getPlateIdsData()
+  },
   methods: {
     submit() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          alert(1)
-          const formData = {...this.form};
-            console.log(formData)
-          formData.plateIds = formData.plateIds.split(',').join('_')
-          console.log(formData.plateIds)
-          // if (this.type == "1") {
-          //   // 编辑
-          //   this.submitLoading = true; 
-          //   editEnterpriseInfoMange(this.form).then(res => {
-          //     this.submitLoading = false;
-          //     if (res.success) {
-          //       this.$Message.success("操作成功");
-          //       this.$emit("on-submit", true);
-          //       this.visible = false;
-          //     }
-          //   });
-          // } else {
-          //   // 添加
-          //   this.submitLoading = true;
-          //   addEnterpriseInfoMange(this.form).then(res => {
-          //     this.submitLoading = false;
-          //     if (res.success) {
-          //       this.$Message.success("操作成功");
-          //       this.$emit("on-submit", true);
-          //       this.visible = false;
-          //     }
-          //   });
-          // }
+          if (this.type == "1") {
+            // 编辑
+            this.submitLoading = true; 
+            editEnterpriseInfoMange(this.form).then(res => {
+              this.submitLoading = false;
+              if (res.success) {
+                this.$Message.success("操作成功");
+                this.$emit("on-submit", true);
+                this.visible = false;
+              }
+            });
+          } else {
+            // 添加
+            this.submitLoading = true;
+            addEnterpriseInfoMange(this.form).then(res => {
+              this.submitLoading = false;
+              if (res.success) {
+                this.$Message.success("操作成功");
+                this.$emit("on-submit", true);
+                this.visible = false;
+              }
+            });
+          }
         }
       });
     },
@@ -198,8 +185,13 @@ export default {
       }
       this.visible = value;
     },
-    changeHandle(val){
-      console.log(val)
+    // 获取板块字典
+    getPlateIdsData() {
+      getDictDataByType('plate').then((res) => {
+        if (res.success) {
+          this.plateIdsOptions = res.result || []
+        }
+      });
     }
   }
 };

@@ -13,5 +13,5 @@ export const ajaxQueryYearDataInput = (params) => {
 
 // 交通轨道 年度数据录入
 export const ajaxYearDataInput = (params) => {
-    return postRequest('/gdjtOperationInfo/insertOrUpdate', params)
+    return postBodyRequest('/gdjtOperationInfo/insertOrUpdate', params)
 }

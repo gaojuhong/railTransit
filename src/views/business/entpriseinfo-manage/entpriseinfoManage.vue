@@ -83,7 +83,7 @@ export default {
         { title: "负责人", key: "leadingCadre", minWidth: 120, sortable: false },
         { title: "联系人", key: "contacts", minWidth: 120, sortable: false },
         { title: "地址", key: "address", minWidth: 120, sortable: false },
-        { title: "板块", key: "plateIds", minWidth: 120, sortable: false },
+        { title: "板块", key: "plateIds", minWidth: 200, sortable: false },
         { title: "审核级别", key: "auditLevel", minWidth: 120, sortable: false },
         { title: "所属于城市", key: "cityId", minWidth: 120, sortable: false },
         { title: "所选择城市",  key: "cityIds",  minWidth: 120,  sortable: false },

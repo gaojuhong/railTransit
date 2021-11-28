@@ -251,10 +251,6 @@
     },
     methods: {
       // 添加 按钮
-   // 投运时间
-      onChangeHandle(date){
-        this.modalForm.useTime = date
-      },
       addHanlde(val) {
         this.$refs.drawerForm.validate((valid) => {
           if (valid) {
@@ -325,7 +321,12 @@
       // 填报年度选择时赋值，条件
       changeHandle(date) {
         this.drawerForm.year = date
-      }
+      },
+
+      // 投运时间
+      onChangeHandle(date){
+        this.modalForm.useTime = date
+      },
     }
   };
 </script>
