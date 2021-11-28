@@ -11,7 +11,7 @@ export const addEnterpriseInfoMange = (params) => {
 }
 // 编辑
 export const editEnterpriseInfoMange = (params) => {
-    return putRequest('/enterpriseInfo/insertOrUpdate', params)
+    return postRequest('/enterpriseInfo/insertOrUpdate', params)
 }
 // 批量
 export const deleteEnterpriseInfoMange = (params) => {

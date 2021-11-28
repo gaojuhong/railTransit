@@ -1,4 +1,4 @@
-<!-- 企业管理 -->
+<!-- 审核单位管理 -->
 
 <template>
   <div class="search">
@@ -59,7 +59,7 @@ import { getEnterpriseInfoMangeList, deleteEnterpriseInfoMange } from "@/api/ent
 import addEdit from "./addEdit.vue";
 import { shortcuts } from "@/libs/shortcuts";
 export default {
-  name: "enterpriseinfoMange",
+  name: "auditcompManage",
   components: { addEdit },
   data() {
     return {
