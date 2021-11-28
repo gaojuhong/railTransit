@@ -86,7 +86,19 @@ export default {
         { title: "联系人", key: "contacts", minWidth: 120, sortable: false },
         { title: "地址", key: "address", minWidth: 120, sortable: false },
         { title: "板块", key: "plateIds", minWidth: 200, sortable: false },
-        { title: "审核级别", key: "auditLevel", minWidth: 120, sortable: false },
+        { title: "审核级别", key: "auditLevel", minWidth: 120, sortable: false, render : (h, params) => {
+          let title = '', color = '';
+          if ( params.row.auditLevel === 'auditFirst') {  
+            title = '初审1'; color = 'geekblue'
+          } else if ( params.row.auditLevel === 'auditFirstw') {
+            title = '初审2'; color  = 'blue'
+          } else if ( params.row.auditLevel === 'auditReview') {
+            title = '复审'; color = 'orange'
+          } else if ( params.row.auditLevel === 'auditFinal') {
+            title = '终审'; color = 'green';
+          }
+          return h('Tag', { props: { color: color}}, title)
+        }},
         { title: "所属于城市", key: "cityId", minWidth: 120, sortable: false },
         { title: "所选择城市",  key: "cityIds",  minWidth: 120,  sortable: false },
         { title: "操作", key: "action", align: "center", width: 150, fixed:"right", render: (h, params) => {

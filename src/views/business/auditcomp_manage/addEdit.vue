@@ -28,13 +28,13 @@
             </FormItem>
           </Col>
           <Col span="8">
-            <FormItem label="地址" prop="address" >
-              <Input v-model="form.address" clearable/>
+            <FormItem label="审核级别" prop="auditLevel" >
+              <dict dict="audit_level" v-model="form.auditLevel" />
             </FormItem>
           </Col>
           <Col span="8">
-            <FormItem label="审核级别" prop="auditLevel" >
-              <dict dict="audit_level" v-model="form.auditLevel" />
+            <FormItem label="地址" prop="address" >
+              <Input v-model="form.address" clearable/>
             </FormItem>
           </Col>
         </Row>
@@ -45,11 +45,11 @@
             </FormItem>
           </Col>
         </Row>
-        <Row :gutter="32">
+        <Row :gutter="32" v-if="!form.auditLevel || form.auditLevel === 'auditFirst' || form.auditLevel === 'auditFirstw'">
           <Col span="24">
             <FormItem label="所选择城市" prop="cityIds">
-              <CheckboxGroup v-model="form.plateIds">
-                <Checkbox v-for="(plate, index) in plateIdsOptions" :key="index" :label="plate.value">{{plate.title}}</Checkbox>
+              <CheckboxGroup v-model="form.cityIds">
+                <Checkbox v-for="city in cityOptions" :key="city.value" :label="city.value">{{city.title}}</Checkbox>
               </CheckboxGroup>
             </FormItem>
           </Col>
@@ -57,7 +57,7 @@
         <Row :gutter="32">
           <Col span="24">
             <FormItem label="板块" prop="plateIds">
-              <CheckboxGroup v-model="form.plateIds" @on-change="changeHandle">
+              <CheckboxGroup v-model="form.plateIds">
                 <Checkbox v-for="plate in plateIdsOptions" :key="plate.value" :label="plate.value">{{plate.title}}</Checkbox>
               </CheckboxGroup>
             </FormItem>
@@ -76,6 +76,7 @@
 import { addEnterpriseInfoMange, editEnterpriseInfoMange } from "@/api/entpriseinfoManage";
 import dict from "@/views/my-components/xboot/dict";
 import { getDictDataByType } from "@/api/index";
+import {cityData} from '@/libs/common'
 export default {
   name: "addEdit",
   components: { dict },
@@ -107,14 +108,16 @@ export default {
         plateIds: [],
         auditLevel: "",
         cityId: "",
-        cityIds: "",
+        cityIds: [],
         typeCode : '1', // 0企业 1审核单位
+        cityOptions : cityData
       },
       // 表单验证规则
       formValidate: {
         entName: [{ required: true, message: "企业名称/单位名称不能为空", trigger: "change" }],
       },
-      plateIdsOptions: [ ]//  板块选项
+      plateIdsOptions: [ ], //  板块选项
+      cityOptions : cityData
     };
   },
   watch: {
@@ -163,11 +166,11 @@ export default {
         return;
       }
       if (this.type == "1") {
-        this.title = "编辑企业";
+        this.title = "编辑审核单位";
         this.maxHeight =
           Number(document.documentElement.clientHeight - 121) + "px";
       } else if (this.type == "2") {
-        this.title = "添加企业";
+        this.title = "添加审核单位";
         this.maxHeight =
           Number(document.documentElement.clientHeight - 121) + "px";
       } else {
